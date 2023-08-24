@@ -346,6 +346,37 @@ function App() {
                             <input id='no_condition' name='noCondition' type='checkbox' onChange={updateState}/>
                           </span>
                           <hr />
+                          <span className={style.antenna__container}>
+                            <span>
+                              <label>Wi-Fi:</label>
+                              <input id='wifi' name='wifi' type='checkbox' onChange={updateState} value={text.wifi}/>
+                              {
+                                text.wifi
+                                ? <>
+                                    <label>| Poco alcance:</label>
+                                    <input id='lost_wifi' name='lostWifi' type='checkbox' onChange={updateState}/>
+                                  </>
+                                : ''
+                              }
+                            </span>
+                            <hr />
+                            <span>
+                              <label>Señal:</label>
+                              <input id='señal' name='señal' type='checkbox' onChange={updateState} value={text.señal}/>
+                              <label>| Sin servicio:</label>
+                              <input id='no_service' name='sinServicio' type='checkbox' onChange={updateState}/>
+                            </span>
+                          </span>
+                          <hr />
+                          <span>
+                            <label>Sensor Prox:</label>
+                            <input id='sensor_prox' name='sensorProx' type='checkbox' onChange={updateState} value={text.sensorProx}/>
+                            <label>| Audífono:</label>
+                            <input id='audifono' name='audifono' type='checkbox' onChange={updateState} value={text.audifono}/>
+                            <label>| Altavoz:</label>
+                            <input id='altavoz' name='altavoz' type='checkbox' onChange={updateState} value={text.altavoz}/>
+                          </span>
+                          <hr />
                           <span className={style.cameras__container}>
                             <legend>Cámaras ⤵️</legend>
                             <span>
@@ -387,35 +418,6 @@ function App() {
                             </span>
                           </span>
                           <hr />
-                          <span>
-                            <label>Sensor Prox:</label>
-                            <input id='sensor_prox' name='sensorProx' type='checkbox' onChange={updateState} value={text.sensorProx}/>
-                            <label>| Audífono:</label>
-                            <input id='audifono' name='audifono' type='checkbox' onChange={updateState} value={text.audifono}/>
-                          </span>
-                          <hr />
-                          <span className={style.antenna__container}>
-                            <span>
-                              <label>Señal:</label>
-                              <input id='señal' name='señal' type='checkbox' onChange={updateState} value={text.señal}/>
-                              <label>| Sin servicio:</label>
-                              <input id='no_service' name='sinServicio' type='checkbox' onChange={updateState}/>
-                            </span>
-                            <hr />
-                            <span>
-                              <label>Wi-Fi:</label>
-                              <input id='wifi' name='wifi' type='checkbox' onChange={updateState} value={text.wifi}/>
-                              {
-                                text.wifi
-                                ? <>
-                                    <label>| Poco alcance:</label>
-                                    <input id='lost_wifi' name='lostWifi' type='checkbox' onChange={updateState}/>
-                                  </>
-                                : ''
-                              }
-                            </span>
-                          </span>
-                          <hr />
                         </>
                       : ''
                   }
@@ -432,8 +434,6 @@ function App() {
                 ? <>
                     <label>| Micrófono:</label>
                     <input id='microfono' name='microfono' type='checkbox' onChange={updateState} value={text.microfono}/>
-                    <label>| Altavoz:</label>
-                    <input id='altavoz' name='altavoz' type='checkbox' onChange={updateState} value={text.altavoz}/>
                   </>
                 : ''
             }
