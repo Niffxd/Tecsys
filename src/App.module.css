@@ -65,3 +65,10 @@ input[type="number"] {
 .copyText {
   width: 80%;
 }
+
+.buttons_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}

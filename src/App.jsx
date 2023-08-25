@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import * as clipboard from 'clipboard-polyfill';
-import logo from './assets/images/logo.png'
-import title from './assets/images/title.png'
+import logo from './assets/images/logo.png';
+import title from './assets/images/title.png';
 import style from './App.module.css';
 
-function App() {
+function App () {
   const [text, setText] = useState({
     pin: '',
     encendido: false,
@@ -21,269 +21,236 @@ function App() {
     microfono: false,
     altavoz: false,
     tornillos: ''
-  })
-  const [auth, setAuth] = useState('...')
-  const [copy, setCopy] = useState('')
+  });
+  const [auth, setAuth] = useState('...');
+  const [copy, setCopy] = useState('');
 
   const updateState = event => {
-    const { value, checked, name, type } = event.target
+    const { value, checked, name, type } = event.target;
 
-    if(type === 'number') {
-      if(name === 'pin') {
+    if (type === 'number') {
+      if (name === 'pin') {
         if (value < 0) {
-          alert('No podes poner negativos en el código')
-          document.getElementById('pin').value = ''
-        }
-        
-        else {
+          window.alert('No podes poner negativos en el código');
+          document.getElementById('pin').value = '';
+        } else {
           setText({
             ...text,
             [name]: value.substring(0, 6)
-          })
+          });
         }
       }
-      if(name === 'bateria') {
+      if (name === 'bateria') {
         if (value < 0) {
-          alert('La batería no puede ser menor a cero')
-          document.getElementById('bateria').value = ''
+          window.alert('La batería no puede ser menor a cero');
+          document.getElementById('bateria').value = '';
         }
         if (value > 100) {
-          alert('La batería no puede ser mayor a cien porciento');
-          document.getElementById('bateria').value = ''
+          window.alert('La batería no puede ser mayor a cien porciento');
+          document.getElementById('bateria').value = '';
         } else {
-          document.getElementById('no_condition').checked = false
+          document.getElementById('no_condition').checked = false;
           setText({
             ...text,
             [name]: `${value} %`
-          })
+          });
         }
       }
-      if(name === 'tornillos') {
+      if (name === 'tornillos') {
         if (value < 0) {
-          alert('No se puede poner tornillos negativos');
-          document.getElementById('tornillos').value = ''
+          window.alert('No se puede poner tornillos negativos');
+          document.getElementById('tornillos').value = '';
         }
         if (value > 2) {
-          alert('Máximo de dos tornillos');
-          document.getElementById('tornillos').value = ''
+          window.alert('Máximo de dos tornillos');
+          document.getElementById('tornillos').value = '';
         } else {
           setText({
             ...text,
             [name]: value
-          })
+          });
         }
       }
     } else {
-      if(name === 'notTrueTone') {
-        document.getElementById('true_tone').checked = false
-        if(text.hasOwnProperty('trueTone')) delete text.trueTone
-        else setText({
+      if (name === 'notTrueTone') {
+        document.getElementById('true_tone').checked = false;
+        if (text.hasOwnProperty('trueTone')) delete text.trueTone //eslint-disable-line
+        else setText({ //eslint-disable-line
           ...text,
           trueTone: false
-        })
-      }
-
-      else if(name === 'trueTone') {
-        document.getElementById('not_true_tone').checked = false
+        });
+      } else if (name === 'trueTone') {
+        document.getElementById('not_true_tone').checked = false;
         setText({
           ...text,
           [name]: checked
-        })
-      }
-
-      else if(name === 'sinImagen') {
-        document.getElementById('no_touch').checked = false
+        });
+      } else if (name === 'sinImagen') {
+        document.getElementById('no_touch').checked = false;
         setText({
           ...text,
           sinTactil: false,
           [name]: checked
-        })
-      }
-
-      else if(name === 'sinTactil') {
-        document.getElementById('no_image').checked = false
+        });
+      } else if (name === 'sinTactil') {
+        document.getElementById('no_image').checked = false;
         setText({
           ...text,
           sinImagen: false,
           [name]: checked
-        })
-      }
-
-      else if(name === 'noCondition') {
-        document.getElementById('bateria').value = ''
+        });
+      } else if (name === 'noCondition') {
+        document.getElementById('bateria').value = '';
         setText({
           ...text,
           bateria: 'sin condición'
-        })
-      }
-
-      else if(name === 'sinServicio') {
-        if(checked) {
-          document.getElementById('señal').checked = false
+        });
+      } else if (name === 'sinServicio') {
+        if (checked) {
+          document.getElementById('señal').checked = false;
           setText({
             ...text,
             señal: false
-          })
+          });
         }
-        else {
-
-        }
-      }
-
-      else if(name === 'señal') {
-        document.getElementById('no_service').checked = false
+      } else if (name === 'señal') {
+        document.getElementById('no_service').checked = false;
         setText({
           ...text,
           [name]: checked
-        })
-      }
-
-      else if(name === 'trasVibra') {
-        if(text.hasOwnProperty('trasManchas')) delete text.trasManchas
-        if(text.hasOwnProperty('trasBorrosa')) delete text.trasBorrosa
+        });
+      } else if (name === 'trasVibra') {
+        if (text.hasOwnProperty('trasManchas')) delete text.trasManchas //eslint-disable-line
+        if (text.hasOwnProperty('trasBorrosa')) delete text.trasBorrosa //eslint-disable-line
         setText({
           ...text,
           [name]: checked
-        })
-      }
-
-      else if(name === 'wifi') {
-        if(!checked) document.getElementById('lost_wifi').checked = false
+        });
+      } else if (name === 'wifi') {
+        if (!checked) document.getElementById('lost_wifi').checked = false;
         setText({
           ...text,
           lostWifi: false,
           [name]: checked
-        })
-      }
-
-      else {
+        });
+      } else {
         setText({
           ...text,
           [name]: type === 'checkbox' ? checked : value
-        })
+        });
       }
-    }    
+    }
   };
 
   const updateSelection = event => {
-    const { value } = event.target
-    if(value === 'touchid') {
-      document.getElementById('auth_value').checked = false
-      if(text.hasOwnProperty('faceid')) delete text.faceid
-      text.home = false
+    const { value } = event.target;
+    if (value === 'touchid') {
+      document.getElementById('auth_value').checked = false;
+      if (text.hasOwnProperty('faceid')) delete text.faceid //eslint-disable-line
+      text.home = false;
     } else {
-      document.getElementById('auth_value').checked = false
-      if(text.hasOwnProperty('touchid')) delete text.touchid
-      if(text.hasOwnProperty('home')) delete text.home
+      document.getElementById('auth_value').checked = false;
+      if (text.hasOwnProperty('touchid')) delete text.touchid //eslint-disable-line
+      if (text.hasOwnProperty('home')) delete text.home //eslint-disable-line
     }
 
     setText({
       ...text,
       [value]: document.getElementById('auth_value').checked
-    })
+    });
 
-    setAuth(value)
+    setAuth(value);
   };
 
   const returnText = () => {
-    let result = ' | Cámara trasera '
-    if(text.camaraTrasera){
-      if(text.trasVibra){
-        result += 'vibra'
-      }
-
-      else if(text.trasManchas){
-        result += 'con manchas'
-        if(text.trasBorrosa) result += ', borrosa'
-      }
-
-      else if(text.trasBorrosa){
-        result += 'borrosa'
-      }
-
-      else {
-        result += 'OK'
+    let result = ' | Cámara trasera ';
+    if (text.camaraTrasera) {
+      if (text.trasVibra) {
+        result += 'vibra';
+      } else if (text.trasManchas) {
+        result += 'con manchas';
+        if (text.trasBorrosa) result += ', borrosa';
+      } else if (text.trasBorrosa) {
+        result += 'borrosa';
+      } else {
+        result += 'OK';
       }
     } else {
-      result = ' | Cámara trasera no funciona'
+      result = ' | Cámara trasera no funciona';
     }
-    
-    if(text.camaraDelantera){
-      if(text.delManchas){
-        result += ' | Cámara delantera con manchas'
-        if(text.delBorrosa) result += ', borrosa'
-      }
 
-      else if(text.delBorrosa){
-        result += ' | Cámara delantera borrosa'
-      }
-
-      else {
-        result += ' | Cámara delantera OK'
+    if (text.camaraDelantera) {
+      if (text.delManchas) {
+        result += ' | Cámara delantera con manchas';
+        if (text.delBorrosa) result += ', borrosa';
+      } else if (text.delBorrosa) {
+        result += ' | Cámara delantera borrosa';
+      } else {
+        result += ' | Cámara delantera OK';
       }
     } else {
-      result += ' | Cámara delantera no funciona'
+      result += ' | Cámara delantera no funciona';
     }
-    
-    if(result === ' | Cámara trasera OK | Cámara delantera OK') result = ' | Cámaras OK'
-    
-    return result
-  }
+
+    if (result === ' | Cámara trasera OK | Cámara delantera OK') result = ' | Cámaras OK';
+
+    return result;
+  };
 
   const makeText = () => {
-    if(!text.encendido) {
+    if (!text.encendido) {
       setCopy(
-        'Ingresa apagado, no se puede testear'
-        + `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}`
-        + `${text.mojado ? ' | Equipo mojado' : ''}`
-        + `${text.puerto ? ' | Toma carga' : ' | No toma carga'}`
-        + `${text.sucio ? ' | Puerto obstruido' : ''}`
-      )
-    } else if(text.sinImagen) {
+        'Ingresa apagado, no se puede testear' +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.mojado ? ' | Equipo mojado' : ''}` +
+        `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
+        `${text.sucio ? ' | Puerto obstruido' : ''}`
+      );
+    } else if (text.sinImagen) {
       setCopy(
-        'Ingresa encendido sin imagen, no se puede testear'
-        + `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}`
-        + `${text.mojado ? ' | Equipo mojado' : ''}`
-        + `${text.puerto ? ' | Toma carga' : ' | No toma carga'}`
-        + `${text.sucio ? ' | Puerto obstruido' : ''}`
-      )
-    } else if(text.sinTactil) {
+        'Ingresa encendido sin imagen, no se puede testear' +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.mojado ? ' | Equipo mojado' : ''}` +
+        `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
+        `${text.sucio ? ' | Puerto obstruido' : ''}`
+      );
+    } else if (text.sinTactil) {
       setCopy(
-        'Ingresa encendido sin táctil, no se puede testear'
-        + `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}`
-        + `${text.mojado ? ' | Equipo mojado' : ''}`
-        + `${text.puerto ? ' | Toma carga' : ' | No toma carga'}`
-        + `${text.sucio ? ' | Puerto obstruido' : ''}`
-      )
+        'Ingresa encendido sin táctil, no se puede testear' +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.mojado ? ' | Equipo mojado' : ''}` +
+        `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
+        `${text.sucio ? ' | Puerto obstruido' : ''}`
+      );
     } else {
       setCopy(
-        `${text.pin.length >= 4 ? `PIN: ${text.pin} | ` : ''}`
-        + `${text.mojado ? 'Equipo mojado | ' : ''}`
-        + `${text.hasOwnProperty('faceid') ? `FaceID ${text.faceid ? 'OK' : 'NO funciona'}` : ''}`
-        + `${text.hasOwnProperty('touchid') ? ` | TouchID ${text.touchid ? 'OK ' : 'NO funciona'}` : ''}`
-        + `${text.hasOwnProperty('home') ? ` | Home ${text.home ? 'OK ' : 'NO funciona'}` : ''}`
-        + `${text.hasOwnProperty('trueTone') ? text.trueTone ? ' | TrueTone OK' : ' | SIN TrueTone' : ''}`
-        + `${text.bateria ? ` | Batería ${text.bateria}` : ''}`
-        + returnText()
-        + `${text.sensorProx ? ' | Sensor OK' : ' | Sensor NO funciona'}`
-        + `${text.audifono ? ' | Audífono OK' : ' | Audífono NO funciona'}`
-        + `${text.hasOwnProperty('señal') ? text.señal ? ' | Señal OK' : ' | Sin servicio' : ''}`
-        + `${text.wifi ? ' | WIFI OK' : ' | WIFI NO funciona'}`
-        + `${text.lostWifi ? ' con poco alcance' : ''}`
-        + `${text.puerto ? ' | Toma carga' : ' | No toma carga'}`
-        + `${text.sucio ? ' | Puerto obstruido' : ''}`
-        + `${text.microfono ? ' | Micrófonos OK' : ' | Micrófonos NO funcionan'}`
-        + `${text.altavoz ? ' | Altavoz OK' : ' | Altavoz NO funciona'}`
-        + `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}`
-      )
+        `${text.pin.length >= 4 ? `PIN: ${text.pin} | ` : ''}` +
+        `${text.mojado ? 'Equipo mojado | ' : ''}` +
+        `${text.hasOwnProperty('faceid') ? `FaceID ${text.faceid ? 'OK' : 'NO funciona'}` : ''}` + //eslint-disable-line
+        `${text.hasOwnProperty('touchid') ? ` | TouchID ${text.touchid ? 'OK ' : 'NO funciona'}` : ''}` + //eslint-disable-line
+        `${text.hasOwnProperty('home') ? ` | Home ${text.home ? 'OK ' : 'NO funciona'}` : ''}` + //eslint-disable-line
+        `${text.hasOwnProperty('trueTone') ? text.trueTone ? ' | TrueTone OK' : ' | SIN TrueTone' : ''}` + //eslint-disable-line
+        `${text.bateria ? ` | Batería ${text.bateria}` : ''}` +
+        returnText() +
+        `${text.sensorProx ? ' | Sensor OK' : ' | Sensor NO funciona'}` +
+        `${text.audifono ? ' | Audífono OK' : ' | Audífono NO funciona'}` +
+        `${text.hasOwnProperty('señal') ? text.señal ? ' | Señal OK' : ' | Sin servicio' : ''}` + //eslint-disable-line
+        `${text.wifi ? ' | WIFI OK' : ' | WIFI NO funciona'}` +
+        `${text.lostWifi ? ' con poco alcance' : ''}` +
+        `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
+        `${text.sucio ? ' | Puerto obstruido' : ''}` +
+        `${text.microfono ? ' | Micrófonos OK' : ' | Micrófonos NO funcionan'}` +
+        `${text.altavoz ? ' | Altavoz OK' : ' | Altavoz NO funciona'}` +
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}`
+      );
     }
 
-    clipboard.writeText(copy)
-    console.log(text)
-  }
-  
-  useEffect(() => {}, [text])
-  
+    clipboard.writeText(copy);
+    clipboard.writeText(copy);
+  };
+
+  useEffect(() => {}, [text]);
+
   return (
     <div className={style.app__container}>
       <div className={style.app__content}>
@@ -325,7 +292,7 @@ function App() {
                             </select>
                             <input id='auth_value' name={auth} type='checkbox' onChange={updateState}/>
                             {
-                              text.hasOwnProperty('touchid')
+                              text.hasOwnProperty('touchid') //eslint-disable-line
                                 ? <>
                                     <label>| Home:</label>
                                     <input id='home' name='home' type='checkbox' onChange={updateState}/>
@@ -341,7 +308,7 @@ function App() {
                           <span>
                             <label>Batería:</label>
                             <input id='bateria' name='bateria' type='number' onChange={updateState}/>
-                            <label style={{ marginRight: '5px'}}>%</label>
+                            <label style={{ marginRight: '5px' }}>%</label>
                             <label> | Sin condición:</label>
                             <input id='no_condition' name='noCondition' type='checkbox' onChange={updateState}/>
                           </span>
@@ -352,11 +319,11 @@ function App() {
                               <input id='wifi' name='wifi' type='checkbox' onChange={updateState} value={text.wifi}/>
                               {
                                 text.wifi
-                                ? <>
-                                    <label>| Poco alcance:</label>
-                                    <input id='lost_wifi' name='lostWifi' type='checkbox' onChange={updateState}/>
-                                  </>
-                                : ''
+                                  ? <>
+                                      <label>| Poco alcance:</label>
+                                      <input id='lost_wifi' name='lostWifi' type='checkbox' onChange={updateState}/>
+                                    </>
+                                  : ''
                               }
                             </span>
                             <hr />
@@ -413,7 +380,7 @@ function App() {
                                       <label>| Borrosa:</label>
                                       <input id='del_borrosa' name='delBorrosa' type='checkbox' onChange={updateState}/>
                                     </>
-                                    : ''
+                                  : ''
                               }
                             </span>
                           </span>
@@ -444,11 +411,14 @@ function App() {
             <input id='tornillos' name='tornillos' type='number' onChange={updateState}/>
           </span>
         </form>
-        <button className={style.generate} onClick={makeText}>¡Listo!</button>
+        <div className={style.buttons_container}>
+          <button className={style.generate} onClick={makeText}>¡Listo!</button>
+          <button className={style.generate} onClick={() => window.location.reload()}>Limpiar</button>
+        </div>
         <span className={style.copyText}>{copy}</span>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
