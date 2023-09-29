@@ -20,7 +20,8 @@ function App () {
     puerto: false,
     microfono: false,
     altavoz: false,
-    tornillos: ''
+    tornillos: '',
+    sim: false
   });
   const [auth, setAuth] = useState('...');
   const [copy, setCopy] = useState('');
@@ -204,7 +205,9 @@ function App () {
         `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
-        `${text.sucio ? ' | Puerto obstruido' : ''}`
+        `${text.sucio ? ' | Puerto obstruido' : ''}` +
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}` +
+        `${text.sim ? ' | Tiene SIM' : ' | No tiene SIM'}`
       );
     } else if (text.sinImagen) {
       setCopy(
@@ -212,7 +215,9 @@ function App () {
         `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
-        `${text.sucio ? ' | Puerto obstruido' : ''}`
+        `${text.sucio ? ' | Puerto obstruido' : ''}` +
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}` +
+        `${text.sim ? ' | Tiene SIM' : ' | No tiene SIM'}`
       );
     } else if (text.sinTactil) {
       setCopy(
@@ -220,7 +225,9 @@ function App () {
         `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
-        `${text.sucio ? ' | Puerto obstruido' : ''}`
+        `${text.sucio ? ' | Puerto obstruido' : ''}` +
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}` +
+        `${text.sim ? ' | Tiene SIM' : ' | No tiene SIM'}`
       );
     } else {
       setCopy(
@@ -241,7 +248,8 @@ function App () {
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
         `${text.microfono ? ' | Micrófonos OK' : ' | Micrófonos NO funcionan'}` +
         `${text.altavoz ? ' | Altavoz OK' : ' | Altavoz NO funciona'}` +
-        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}`
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}` +
+        `${text.sim ? ' | Tiene SIM' : ' | No tiene SIM'}`
       );
     }
 
@@ -259,11 +267,11 @@ function App () {
           <img src={title} alt='logo' width={120}/>
         </div>
         <form className={style.form__container}>
-          <span>
+          {/* <span>
             <label>PIN:</label>
             <input id='pin' name='pin' type='number' onChange={updateState} value={text.pin}/>
           </span>
-          <hr />
+          <hr /> */}
           <span>
             <label>Encendido:</label>
             <input id='turn_on' name='encendido' type='checkbox' onChange={updateState} value={text.encendido}/>
@@ -367,6 +375,14 @@ function App () {
                                     </>
                                   : ''
                               }
+                              {
+                                !text.camaraTrasera
+                                  ? <>
+                                      <label>No se puede testear:</label>
+                                      <input id='can_not_test' name='canNotTest' type='checkbox' onChange={updateState}/>
+                                    </>
+                                  : ''
+                              }
                             </span>
                             <hr />
                             <span>
@@ -379,6 +395,14 @@ function App () {
                                       <input id='mancha_delantera' name='delManchas' type='checkbox' onChange={updateState}/>
                                       <label>| Borrosa:</label>
                                       <input id='del_borrosa' name='delBorrosa' type='checkbox' onChange={updateState}/>
+                                    </>
+                                  : ''
+                              }
+                              {
+                                !text.camaraDelantera
+                                  ? <>
+                                      <label>No se puede testear:</label>
+                                      <input id='can_not_test' name='canNotTest' type='checkbox' onChange={updateState}/>
                                     </>
                                   : ''
                               }
@@ -409,6 +433,8 @@ function App () {
           <span>
             <label>Tornillos:</label>
             <input id='tornillos' name='tornillos' type='number' onChange={updateState}/>
+            <label>| Posee SIM:</label>
+            <input id='sim' name='sim' type='checkbox' onChange={updateState}/>
           </span>
         </form>
         <div className={style.buttons_container}>
