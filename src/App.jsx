@@ -202,7 +202,7 @@ function App () {
     if (!text.encendido) {
       setCopy(
         'Ingresa apagado, no se puede testear' +
-        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -212,7 +212,7 @@ function App () {
     } else if (text.sinImagen) {
       setCopy(
         'Ingresa encendido sin imagen, no se puede testear' +
-        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -222,7 +222,7 @@ function App () {
     } else if (text.sinTactil) {
       setCopy(
         'Ingresa encendido sin táctil, no se puede testear' +
-        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -231,7 +231,7 @@ function App () {
       );
     } else {
       setCopy(
-        `${text.pin.length >= 4 ? `PIN: ${text.pin} | ` : ''}` +
+        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? 'Equipo mojado | ' : ''}` +
         `${text.hasOwnProperty('faceid') ? `FaceID ${text.faceid ? 'OK' : 'NO funciona'}` : ''}` + //eslint-disable-line
         `${text.hasOwnProperty('touchid') ? ` | TouchID ${text.touchid ? 'OK ' : 'NO funciona'}` : ''}` + //eslint-disable-line
@@ -253,11 +253,12 @@ function App () {
       );
     }
 
-    clipboard.writeText(copy);
-    clipboard.writeText(copy);
+    console.log(text);
   };
 
-  useEffect(() => {}, [text]);
+  useEffect(() => {
+    copy.length !== 0 && clipboard.writeText(copy);
+  }, [text, copy]);
 
   return (
     <div className={style.app__container}>
@@ -340,7 +341,7 @@ function App () {
                               <input id='señal' name='señal' type='checkbox' onChange={updateState} value={text.señal}/>
                               <label>| Sin servicio:</label>
                               <input id='no_service' name='sinServicio' type='checkbox' onChange={updateState}/>
-                            </span>
+                            </span>b
                           </span>
                           <hr />
                           <span>
@@ -379,7 +380,7 @@ function App () {
                                 !text.camaraTrasera
                                   ? <>
                                       <label>No se puede testear:</label>
-                                      <input id='can_not_test' name='canNotTest' type='checkbox' onChange={updateState}/>
+                                      <input id='can_not_test_rear' name='canNotTestRear' type='checkbox' onChange={updateState}/>
                                     </>
                                   : ''
                               }
@@ -402,7 +403,7 @@ function App () {
                                 !text.camaraDelantera
                                   ? <>
                                       <label>No se puede testear:</label>
-                                      <input id='can_not_test' name='canNotTest' type='checkbox' onChange={updateState}/>
+                                      <input id='can_not_test_front' name='canNotTestFront' type='checkbox' onChange={updateState}/>
                                     </>
                                   : ''
                               }
