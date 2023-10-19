@@ -88,16 +88,29 @@ function App () {
         });
       } else if (name === 'sinImagen') {
         document.getElementById('no_touch').checked = false;
+        document.getElementById('blocked').checked = false;
         setText({
           ...text,
           sinTactil: false,
+          blocked: false,
           [name]: checked
         });
       } else if (name === 'sinTactil') {
         document.getElementById('no_image').checked = false;
+        document.getElementById('blocked').checked = false;
         setText({
           ...text,
           sinImagen: false,
+          blocked: false,
+          [name]: checked
+        });
+      } else if (name === 'blocked') {
+        document.getElementById('no_image').checked = false;
+        document.getElementById('no_touch').checked = false;
+        setText({
+          ...text,
+          sinImagen: false,
+          sinTactil: false,
           [name]: checked
         });
       } else if (name === 'noCondition') {
@@ -172,10 +185,12 @@ function App () {
         result += 'con manchas';
         if (text.trasBorrosa) result += ', borrosa';
       } else if (text.trasBorrosa) {
-        result += 'borrosa';
+        result += 'borrosa o no enfoca';
       } else {
         result += 'OK';
       }
+    } else if (text.canNotTestRear) {
+      result += 'no se puede testear';
     } else {
       result = ' | Cámara trasera no funciona';
     }
@@ -185,15 +200,18 @@ function App () {
         result += ' | Cámara delantera con manchas';
         if (text.delBorrosa) result += ', borrosa';
       } else if (text.delBorrosa) {
-        result += ' | Cámara delantera borrosa';
+        result += ' | Cámara delantera borrosa o no enfoca';
       } else {
         result += ' | Cámara delantera OK';
       }
+    } else if (text.canNotTestFront) {
+      result += ' | Cámara delantera no se puede testear';
     } else {
       result += ' | Cámara delantera no funciona';
     }
 
     if (result === ' | Cámara trasera OK | Cámara delantera OK') result = ' | Cámaras OK';
+    if (result === ' | Cámara trasera no se puede testear | Cámara delantera no se puede testear') result = ' | Cámaras no se pueden testear';
 
     return result;
   };
@@ -222,6 +240,16 @@ function App () {
     } else if (text.sinTactil) {
       setCopy(
         'Ingresa encendido sin táctil, no se puede testear' +
+        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.mojado ? ' | Equipo mojado' : ''}` +
+        `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
+        `${text.sucio ? ' | Puerto obstruido' : ''}` +
+        `${text.tornillos > 0 ? ` | Tornillos: ${text.tornillos}` : ' | No posee tornillos'}` +
+        `${text.sim ? ' | Tiene SIM' : ' | No tiene SIM'}`
+      );
+    } else if (text.blocked) {
+      setCopy(
+        'Ingresa bloqueado, no se puede testear' +
         // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
@@ -288,10 +316,12 @@ function App () {
                     <input id='no_image' name='sinImagen' type='checkbox' onChange={updateState} value={text.sinImagen}/>
                     <label>| Sin Táctil:</label>
                     <input id='no_touch' name='sinTactil' type='checkbox' onChange={updateState} value={text.sinTactil}/>
+                    <label>| Bloqueado:</label>
+                    <input id='blocked' name='blocked' type='checkbox' onChange={updateState} value={text.blocked}/>
                   </span>
                   <hr />
                   {
-                    !text.sinImagen && !text.sinTactil
+                    !text.sinImagen && !text.sinTactil && !text.blocked
                       ? <>
                           <span>
                             <select id='auth_select' onChange={updateSelection}>
@@ -368,7 +398,7 @@ function App () {
                                           ? <>
                                               <label>| Manchas:</label>
                                               <input id='mancha_trasera' name='trasManchas' type='checkbox' onChange={updateState}/>
-                                              <label>| Borrosa:</label>
+                                              <label>| Borrosa/No enfoca:</label>
                                               <input id='tras_borrosa' name='trasBorrosa' type='checkbox' onChange={updateState}/>
                                             </>
                                           : ''
@@ -394,7 +424,7 @@ function App () {
                                   ? <>
                                       <label>| Manchas:</label>
                                       <input id='mancha_delantera' name='delManchas' type='checkbox' onChange={updateState}/>
-                                      <label>| Borrosa:</label>
+                                      <label>| Borrosa/No enfoca:</label>
                                       <input id='del_borrosa' name='delBorrosa' type='checkbox' onChange={updateState}/>
                                     </>
                                   : ''
@@ -422,7 +452,7 @@ function App () {
             <label>| Sucio:</label>
             <input id='sucio' name='sucio' type='checkbox' onChange={updateState}/>
             {
-              text.encendido && (!text.sinImagen ? !text.sinTactil : false)
+              text.encendido && !text.sinImagen && !text.sinTactil && !text.blocked
                 ? <>
                     <label>| Micrófono:</label>
                     <input id='microfono' name='microfono' type='checkbox' onChange={updateState} value={text.microfono}/>
