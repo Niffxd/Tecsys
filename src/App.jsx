@@ -371,7 +371,7 @@ function App () {
                               <input id='señal' name='señal' type='checkbox' onChange={updateState} value={text.señal}/>
                               <label>| Sin servicio:</label>
                               <input id='no_service' name='sinServicio' type='checkbox' onChange={updateState}/>
-                            </span>b
+                            </span>
                           </span>
                           <hr />
                           <span>
