@@ -220,7 +220,7 @@ function App () {
     if (!text.encendido) {
       setCopy(
         'Ingresa apagado, no se puede testear' +
-        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -230,7 +230,7 @@ function App () {
     } else if (text.sinImagen) {
       setCopy(
         'Ingresa encendido sin imagen, no se puede testear' +
-        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -240,7 +240,7 @@ function App () {
     } else if (text.sinTactil) {
       setCopy(
         'Ingresa encendido sin táctil, no se puede testear' +
-        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -250,7 +250,7 @@ function App () {
     } else if (text.blocked) {
       setCopy(
         'Ingresa bloqueado, no se puede testear' +
-        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? ' | Equipo mojado' : ''}` +
         `${text.puerto ? ' | Toma carga' : ' | No toma carga'}` +
         `${text.sucio ? ' | Puerto obstruido' : ''}` +
@@ -259,7 +259,7 @@ function App () {
       );
     } else {
       setCopy(
-        // `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
+        `${text.pin.length >= 4 ? ` | PIN: ${text.pin}` : ''}` +
         `${text.mojado ? 'Equipo mojado | ' : ''}` +
         `${text.hasOwnProperty('faceid') ? `FaceID ${text.faceid ? 'OK' : 'NO funciona'}` : ''}` + //eslint-disable-line
         `${text.hasOwnProperty('touchid') ? ` | TouchID ${text.touchid ? 'OK ' : 'NO funciona'}` : ''}` + //eslint-disable-line
@@ -296,11 +296,11 @@ function App () {
           <img src={title} alt='logo' width={120}/>
         </div>
         <form className={style.form__container}>
-          {/* <span>
+          <span>
             <label>PIN:</label>
             <input id='pin' name='pin' type='number' onChange={updateState} value={text.pin}/>
           </span>
-          <hr /> */}
+          <hr />
           <span>
             <label>Encendido:</label>
             <input id='turn_on' name='encendido' type='checkbox' onChange={updateState} value={text.encendido}/>
