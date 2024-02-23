@@ -297,8 +297,8 @@ function App () {
         </div>
         <form className={style.form__container}>
           <span>
-            <label>PIN:</label>
-            <input id='pin' name='pin' type='number' onChange={updateState} value={text.pin}/>
+            {/* <label>PIN:</label>
+            <input id='pin' name='pin' type='number' onChange={updateState} value={text.pin}/> */}
           </span>
           <hr />
           <span>
