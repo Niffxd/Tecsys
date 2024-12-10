@@ -1,4 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .img-404 {
   width: 100vw;
   height: 100vh;
+  background-color: #1f95f5;
+  background-image: url('./src/assets/images/404.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
